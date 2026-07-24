@@ -8,8 +8,11 @@ const scoreElement = document.querySelector("#score");
 const highScoreElement = document.querySelector("#high-score");
 const timeElement = document.querySelector("#time");
 
-const blockWidth = 50;
-const blockHeight = 50;
+
+const isMobile = window.innerWidth < 768;
+
+const blockWidth = isMobile ? 25 : 50;
+const blockHeight = isMobile ? 25 : 50;
 
 const cols = Math.floor(board.clientWidth / blockWidth);
 const rows = Math.floor(board.clientHeight / blockHeight);
@@ -196,4 +199,40 @@ document.addEventListener("keydown", (event) => {
                 direction = "right";
             break;
     }
+});
+
+let startX = 0;
+let startY = 0;
+
+document.addEventListener("touchstart",(e)=>{
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+});
+
+document.addEventListener("touchend",(e)=>{
+
+    let endX = e.changedTouches[0].clientX;
+    let endY = e.changedTouches[0].clientY;
+
+    let dx = endX - startX;
+    let dy = endY - startY;
+
+    if(Math.abs(dx) > Math.abs(dy)){
+
+        if(dx > 30 && direction!="left")
+            direction="right";
+
+        else if(dx < -30 && direction!="right")
+            direction="left";
+
+    }else{
+
+        if(dy > 30 && direction!="up")
+            direction="down";
+
+        else if(dy < -30 && direction!="down")
+            direction="up";
+
+    }
+
 });
